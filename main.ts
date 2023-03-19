@@ -1,21 +1,12 @@
-import { chatCompletion } from "./openai.ts";
+import { readDiffStagedFiles } from "./git.ts";
+import { generateCommitMessage } from "./generator.ts";
 
 const token = Deno.env.get("OPENAI_TOKEN");
 if (!token) {
   throw new Error("OPENAI_TOKEN is not set");
 }
 
-const data = await chatCompletion(
-  token,
-  {
-    model: "gpt-3.5-turbo",
-    messages: [
-      {
-        role: "user",
-        content: "Say this is a test!",
-      },
-    ],
-  },
-);
+const diff = await readDiffStagedFiles();
+const commitMessage = await generateCommitMessage(token, diff);
 
-console.log(data);
+console.log(commitMessage);
