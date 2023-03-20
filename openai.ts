@@ -72,6 +72,7 @@ const messageSchema = z.object({
 const chatCompletionRequestSchema = z.object({
   model: z.literal("gpt-3.5-turbo"),
   messages: z.array(messageSchema),
+  temperature: z.number().optional(),
   top_p: z.number().optional(),
   n: z.number().optional(),
   steram: z.boolean().optional(),

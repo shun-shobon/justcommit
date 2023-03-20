@@ -17,6 +17,8 @@ export async function generateCommitMessage(
   const request: ChatCompletionRequest = {
     model: "gpt-3.5-turbo",
     messages,
+    max_tokens: 25,
+    temperature: 0.2,
   };
 
   const response = await chatCompletion(token, request);
@@ -34,7 +36,7 @@ const systemMessage: Message = {
       "Output the best commit message based on the following constraints.",
     ].join(" "),
     "",
-    "# constraint",
+    "# Constraint",
     "- My input is an output of 'git diff --staged' command.",
     "- Your output is only a commit message.",
     "- The commit message must be less than 50 characters.",
