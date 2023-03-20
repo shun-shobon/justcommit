@@ -37,14 +37,15 @@ const systemMessage: Message = {
     ].join(" "),
     "",
     "# Constraint",
-    "- My input is an output of 'git diff --staged' command.",
-    "- Your output is only a commit message.",
-    "- The commit message must be less than 50 characters.",
     "- The commit message must be clean and comprehensive.",
     "- Follow the conventional commit message format.",
     "- Use uppercase for the first letter of the commit message.",
     "- Don't add period at the end of the commit message.",
     "- Don't add any description to the commit message.",
+    "",
+    "# Input/Output",
+    "Input is an output of 'git diff --staged' command.",
+    "Output is a commit message.",
   ].join("\n"),
 };
 
