@@ -1,4 +1,5 @@
 import { path, TOML, z } from "./deps.ts";
+import { credentialSchema } from "./credential.ts";
 
 const CONFIG_DIR_NAME = "justcommit";
 const CONFIG_FILE_NAME = "config.toml";
@@ -24,8 +25,5 @@ export function getConfigPath(): string {
 export type Config = z.infer<typeof configSchema>;
 
 const configSchema = z.object({
-  credential: z.object({
-    mode: z.enum(["plain", "1password"]),
-    token: z.string(),
-  }),
+  credential: credentialSchema,
 });
