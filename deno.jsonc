@@ -1,5 +1,5 @@
 {
   "tasks": {
-    "dev": "op run --env-file=.env --no-masking -- deno run --allow-env=OPENAI_TOKEN --allow-net=api.openai.com --allow-run=git main.ts"
+    "dev": "op run --env-file=.env --no-masking -- deno run -A main.ts"
   }
 }
