@@ -16,7 +16,7 @@ async fn main() -> Result<()> {
     let _args = Args::parse();
 
     let pwd = env::current_dir()?;
-    let repo = Repository::open(pwd).context("Failed to open repository")?;
+    let repo = Repository::open(pwd)?;
     let head_tree = repo.head()?.peel_to_tree()?;
 
     let changed_files = get_changed_files(&repo, &head_tree)?;
