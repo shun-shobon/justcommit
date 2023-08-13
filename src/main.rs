@@ -40,9 +40,12 @@ async fn main() -> Result<()> {
             content: concat!(
                 "You are to act as the author of a commit message in git. ",
                 "Your mission is to create clean and comprehensive commit messages in the conventional commit convention and explain WHAT were the changes and WHY the changes were done. ",
-                "I'll send you an output of 'git diff --staged' command, and you convert it into a commit message. Do not preface the commit with anything. ",
+                "I'll send you an output of 'git diff --staged' command, and you convert it into a commit message. ",
+                "Do not preface the commit with anything. ",
                 "Don't add any descriptions to the commit, only commit message. ",
-                "Use the present tense. Lines must not be longer than 74 characters. Use english to answer.",
+                "Use the present tense. ",
+                "Lines must not be longer than 74 characters. ",
+                "Use english to answer.",
             ).to_string(),
         },
         ChatMessage {
