@@ -1,6 +1,6 @@
 mod args;
 
-use anyhow::{Context, Result};
+use anyhow::{ensure, Result};
 use args::Args;
 // use chatgpt::prelude::*;
 use clap::Parser;
@@ -20,6 +20,9 @@ async fn main() -> Result<()> {
     let head_tree = repo.head()?.peel_to_tree()?;
 
     let changed_files = get_changed_files(&repo, &head_tree)?;
+
+    ensure!(!changed_files.is_empty(), "No files changed in this commit");
+
     let diffs = get_file_diffs(&repo, &changed_files, &head_tree)?;
 
     println!("{}", diffs);
