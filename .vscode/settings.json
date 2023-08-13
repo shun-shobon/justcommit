@@ -1,7 +1,0 @@
-{
-  "deno.enable": false,
-  "editor.defaultFormatter": "denoland.vscode-deno",
-  "[typescript][typescriptreact][json][jsonc][markdown]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  }
-}

@@ -1,5 +1,0 @@
-{
-  "tasks": {
-    "dev": "op run --env-file=.env --no-masking -- deno run -A main.ts"
-  }
-}
