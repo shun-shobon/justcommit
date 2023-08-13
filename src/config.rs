@@ -1,7 +1,7 @@
 use std::path::Path;
 
 use anyhow::Result;
-use config::{Config, Environment, File};
+use config::{Config, File};
 use serde::{Deserialize, Serialize};
 use xdg::BaseDirectories;
 
@@ -53,7 +53,6 @@ impl RawConfig {
 
         let config = Config::builder()
             .add_source(File::from(config_file))
-            .add_source(Environment::with_prefix(APP_NAME.to_uppercase().as_str()))
             .build()?;
 
         config.try_deserialize().map_err(Into::into)
