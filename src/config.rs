@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::{path::Path, process::Command};
 
 use anyhow::Result;
 use config::{Config, File};
@@ -19,7 +19,14 @@ impl ConfigData {
 
         let token = match raw_config.openai_token {
             OpenAIToken::Plain { token } => token,
-            OpenAIToken::OnePassword { .. } => todo!(),
+            OpenAIToken::OnePassword { token: token_ref } => {
+                let output = Command::new("op")
+                    .arg("read")
+                    .arg("--no-newline")
+                    .arg(token_ref)
+                    .output()?;
+                String::from_utf8(output.stdout)?
+            }
         };
 
         Ok(Self {
