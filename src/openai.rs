@@ -1,17 +1,13 @@
-use std::env;
-
-use anyhow::{Context as _, Result};
+use anyhow::Result;
 use chatgpt::{prelude::*, types::Role};
 use indoc::indoc;
 
-pub async fn generate_commit_message(diffs: impl Into<String>) -> Result<String> {
-    let openai_token = env::var("OPENAI_TOKEN").context("OPENAI_TOKEN is not set")?;
-
+pub async fn generate_commit_message(token: &str, diffs: impl Into<String>) -> Result<String> {
     let openai_config = ModelConfigurationBuilder::default()
         .engine(ChatGPTEngine::Gpt35Turbo)
         .build()
         .unwrap();
-    let chatgpt_client = ChatGPT::new_with_config(openai_token, openai_config).unwrap();
+    let chatgpt_client = ChatGPT::new_with_config(token, openai_config).unwrap();
 
     let history = create_history(diffs);
 
