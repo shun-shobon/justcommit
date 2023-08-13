@@ -11,7 +11,7 @@ use crate::openai::generate_commit_message;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let _args = Args::parse();
+    Args::parse();
 
     let diffs = get_diffs()?;
     let message = generate_commit_message(diffs).await?;
