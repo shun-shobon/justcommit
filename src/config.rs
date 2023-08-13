@@ -10,38 +10,40 @@ static CONFIG_FILE_NAME: &str = "config.toml";
 
 #[derive(Debug, Clone)]
 pub struct ConfigData {
-    pub token: String,
+    pub openai_token: String,
 }
 
 impl ConfigData {
     pub fn load() -> Result<Self> {
         let raw_config = RawConfig::load()?;
 
-        let token = match raw_config.token_type {
-            TokenType::Plain => raw_config.token,
-            TokenType::OnePassword => todo!(),
+        let token = match raw_config.openai_token {
+            OpenAIToken::Plain { token } => token,
+            OpenAIToken::OnePassword { .. } => todo!(),
         };
 
-        Ok(Self { token })
+        Ok(Self {
+            openai_token: token,
+        })
     }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct RawConfig {
-    token: String,
-
-    #[serde(default, rename = "type")]
-    token_type: TokenType,
+    openai_token: OpenAIToken,
 }
 
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
-enum TokenType {
-    #[default]
-    Plain,
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase", tag = "type")]
+enum OpenAIToken {
+    Plain {
+        token: String,
+    },
 
     #[serde(rename = "1password")]
-    OnePassword,
+    OnePassword {
+        token: String,
+    },
 }
 
 impl RawConfig {

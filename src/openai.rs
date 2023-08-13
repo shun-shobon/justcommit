@@ -2,12 +2,15 @@ use anyhow::Result;
 use chatgpt::{prelude::*, types::Role};
 use indoc::indoc;
 
-pub async fn generate_commit_message(token: &str, diffs: impl Into<String>) -> Result<String> {
+pub async fn generate_commit_message(
+    openai_token: &str,
+    diffs: impl Into<String>,
+) -> Result<String> {
     let openai_config = ModelConfigurationBuilder::default()
         .engine(ChatGPTEngine::Gpt35Turbo)
         .build()
         .unwrap();
-    let chatgpt_client = ChatGPT::new_with_config(token, openai_config).unwrap();
+    let chatgpt_client = ChatGPT::new_with_config(openai_token, openai_config).unwrap();
 
     let history = create_history(diffs);
 

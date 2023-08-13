@@ -17,7 +17,7 @@ async fn main() -> Result<()> {
     let config = ConfigData::load()?;
 
     let diffs = get_diffs()?;
-    let message = generate_commit_message(&config.token, diffs).await?;
+    let message = generate_commit_message(&config.openai_token, diffs).await?;
 
     println!("{}", message);
 
