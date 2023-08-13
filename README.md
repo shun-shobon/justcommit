@@ -1,4 +1,4 @@
-# [WIP] JustCommit
+# JustCommit
 
 AI powered commit message generator.
 
