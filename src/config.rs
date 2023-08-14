@@ -1,9 +1,8 @@
-use std::{path::Path, process::Command};
+use std::{env, path::PathBuf, process::Command};
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 use config::{Config, File};
 use serde::{Deserialize, Serialize};
-use xdg::BaseDirectories;
 
 static APP_NAME: &str = env!("CARGO_PKG_NAME");
 static CONFIG_FILE_NAME: &str = "config.toml";
@@ -55,13 +54,33 @@ enum OpenAIToken {
 
 impl RawConfig {
     fn load() -> Result<Self> {
-        let xdg_dir = BaseDirectories::with_prefix(APP_NAME)?;
-        let config_file = xdg_dir.get_config_file(Path::new(CONFIG_FILE_NAME));
+        let config_dir = get_config_base_dir_by_os()
+            .or_else(|| {
+                dirs::home_dir().map(|mut path| {
+                    path.push(".config");
+                    path
+                })
+            })
+            .map(|p| p.join(APP_NAME))
+            .context("Failed to get config base directory")?;
+        let config_file = config_dir.join(CONFIG_FILE_NAME);
 
         let config = Config::builder()
             .add_source(File::from(config_file))
             .build()?;
 
         config.try_deserialize().map_err(Into::into)
+    }
+}
+
+fn get_config_base_dir_by_os() -> Option<PathBuf> {
+    #[cfg(any(unix, target_os = "redox"))]
+    {
+        env::var("XDG_CONFIG_HOME").map(PathBuf::from).ok()
+    }
+
+    #[cfg(windows)]
+    {
+        env::var("APPDATA").map(PathBuf::from).ok()
     }
 }
