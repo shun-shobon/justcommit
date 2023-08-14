@@ -10,6 +10,11 @@ on:
         type: string
         description: "Version to release"
         required: true
+      dry-run:
+        type: boolean
+        description: "Don't actually release"
+        required: false
+        default: false
   workflow_dispatch:
     inputs:
       tag-name:
