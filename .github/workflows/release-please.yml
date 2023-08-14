@@ -34,4 +34,3 @@ jobs:
     secrets: inherit
     with:
       tag-name: ${{ needs.release-please.outputs.tag-name }}
-      version: ${{ needs.release-please.outputs.version }}
