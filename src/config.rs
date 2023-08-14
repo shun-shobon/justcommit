@@ -1,18 +1,17 @@
 use std::{env, path::PathBuf, process::Command};
 
 use anyhow::{Context, Result};
-use config::{Config, File};
 use serde::{Deserialize, Serialize};
 
 static APP_NAME: &str = env!("CARGO_PKG_NAME");
 static CONFIG_FILE_NAME: &str = "config.toml";
 
 #[derive(Debug, Clone)]
-pub struct ConfigData {
+pub struct Config {
     pub openai_token: String,
 }
 
-impl ConfigData {
+impl Config {
     pub fn load() -> Result<Self> {
         let raw_config = RawConfig::load()?;
 
@@ -65,8 +64,8 @@ impl RawConfig {
             .context("Failed to get config base directory")?;
         let config_file = config_dir.join(CONFIG_FILE_NAME);
 
-        let config = Config::builder()
-            .add_source(File::from(config_file))
+        let config = config::Config::builder()
+            .add_source(config::File::from(config_file))
             .build()?;
 
         config.try_deserialize().map_err(Into::into)

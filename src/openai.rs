@@ -4,7 +4,7 @@ use indoc::indoc;
 
 pub async fn generate_commit_message(
     openai_token: &str,
-    diffs: impl Into<String>,
+    diffs: impl Into<String> + Send,
 ) -> Result<String> {
     let openai_config = ModelConfigurationBuilder::default()
         .engine(ChatGPTEngine::Gpt35Turbo)
@@ -16,7 +16,7 @@ pub async fn generate_commit_message(
 
     let resp = chatgpt_client.send_history(&history).await?;
 
-    Ok(resp.message().content.to_owned())
+    Ok(resp.message().content.clone())
 }
 
 fn create_history(diffs: impl Into<String>) -> Vec<ChatMessage> {
