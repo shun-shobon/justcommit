@@ -102,6 +102,6 @@ jobs:
 
       - name: Release | Upload asset
         if: ${{ !inputs.dry-run }}
-        run: gh release upload ${{ inputs.tag-name }} ${{ steps.package-info.outputs.name }}.*
+        run: gh release upload ${{ inputs.tag-name }} ${{ steps.package-info.outputs.name }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
