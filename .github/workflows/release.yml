@@ -1,0 +1,90 @@
+name: release
+on:
+  workflow_call:
+    inputs:
+      tag-name:
+        type: string
+        description: "Tag to release"
+        required: true
+      version:
+        type: string
+        description: "Version to release"
+        required: true
+  workflow_dispatch:
+    inputs:
+      tag-name:
+        type: string
+        description: "Tag to release"
+        required: true
+      version:
+        type: string
+        description: "Version to release"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ${{ matrix.job.os }}
+    strategy:
+      matrix:
+        job:
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            use-cross: false
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            use-cross: false
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            use-cross: false
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            use-cross: false
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            use-cross: true
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: Swatinem/rust-cache@v2
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          target: ${{ matrix.job.target }}
+
+      - uses: taiki-e/install-action@v2
+        if: matrix.job.use-cross
+        with:
+          tool: cross
+
+      - shell: bash
+        run: |
+          if [[ "${{ matrix.job.use-cross }}" == "true" ]]; then
+            cross build --release --target ${{ matrix.job.target }}
+          else
+            cargo build --release --target ${{ matrix.job.target }}
+          fi
+
+      - id: package-info
+        shell: bash
+        run: echo "name=justcommit-${{ inputs.version }}-${{ matrix.job.target }}" >> "$GITHUB_OUTPUT"
+
+      - shell: bash
+        run: |
+          package_name="${{ steps.package-info.outputs.name }}"
+          mkdir -p "$pacakge_name"
+
+          cp "target/${{ matrix.job.target }}/release/justcommit" "$package_name/"
+          cp "README.md" "$package_name/"
+          cp "LICENSE" "$package_name/"
+
+          if [[ "${{ matrix.job.os }}" == "windows-latest" ]]; then
+            zip -r "$package_name.zip" "$pacakge_name/"
+          else
+            tar -czvf "$package_name.tar.gz" "$pacakge_name/"
+          fi
+
+      - shell: bash
+        run: gh release upload ${{ inputs.tag-name }} ${{ steps.package-info.outputs.name }}.*

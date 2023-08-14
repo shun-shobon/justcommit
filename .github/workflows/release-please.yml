@@ -1,0 +1,37 @@
+name: release-please
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release-created: ${{ steps.release.outputs.release_created }}
+      tag-name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}
+    steps:
+      - id: token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          token: ${{ steps.token.outputs.token }}
+          release-type: rust
+
+  release:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release-created }}
+    permissions:
+      contents: read
+    uses: ./.github/workflows/release.yml
+    secrets: inherit
+    with:
+      tag-name: ${{ needs.release-please.outputs.tag-name }}
+      version: ${{ needs.release-please.outputs.version }}
