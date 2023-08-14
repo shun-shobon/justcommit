@@ -25,22 +25,31 @@ permissions:
 jobs:
   release:
     runs-on: ${{ matrix.os }}
+    env:
+      RUSTFLAGS: ${{ matrix.rustflags || '' }}
     strategy:
       fail-fast: false
       matrix:
         include:
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-latest
+
           - target: aarch64-unknown-linux-gnu
             os: ubuntu-latest
+
           - target: x86_64-apple-darwin
             os: macos-latest
+
           - target: aarch64-apple-darwin
             os: macos-latest
+
           - target: x86_64-pc-windows-msvc
             os: windows-latest
+            rustflags: -C target-feature=+crt-static
+
           - target: aarch64-pc-windows-msvc
             os: windows-latest
+            rustflags: -C target-feature=+crt-static
     steps:
       - name: Setup | Checkout
         uses: actions/checkout@v3
@@ -57,6 +66,11 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         uses: taiki-e/install-action@cross
 
+      - name: Setup | Path
+        if: matrix.target == 'aarch64-pc-windows-msvc'
+        shell: bash
+        run: echo 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\Llvm\x64\bin' >> $GITHUB_PATH
+
       - name: Build | Build [Cargo]
         if: matrix.os != 'ubuntu-latest'
         run: |
@@ -70,7 +84,7 @@ jobs:
         id: package-info
         shell: bash
         run: |
-          if [[ ${{ matrix.target }} != 'windows-latest' ]]; then
+          if [[ ${{ matrix.os }} != 'windows-latest' ]]; then
             echo "name=justcommit-${{ matrix.target }}.tar.gz" >> $GITHUB_OUTPUT
           else
             echo "name=justcommit-${{ matrix.target }}.zip" >> $GITHUB_OUTPUT
