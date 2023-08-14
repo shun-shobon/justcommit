@@ -59,11 +59,11 @@ jobs:
       - name: Build | Build [Cargo]
         if: matrix.os != 'ubuntu-latest'
         run: |
-          cargo build --release --frozen --target ${{ matrix.target }}
+          cargo build --release --locked --target ${{ matrix.target }}
       - name: Build | Build [Cross]
         if: matrix.os == 'ubuntu-latest'
         run: |
-          cross build --release --frozen --target ${{ matrix.target }}
+          cross build --release --locked --target ${{ matrix.target }}
 
       - name: Post Build | Get package info
         id: package-info
