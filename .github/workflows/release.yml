@@ -20,6 +20,11 @@ on:
         type: string
         description: "Version to release"
         required: true
+      dry-run:
+        type: boolean
+        description: "Don't actually release"
+        required: false
+        default: false
 
 permissions:
   contents: read
@@ -86,5 +91,11 @@ jobs:
             tar -czvf "$package_name.tar.gz" "$pacakge_name/"
           fi
 
-      - shell: bash
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.package-info.outputs.name }}
+          path: ${{ steps.package-info.outputs.name }}.*
+
+      - if: !inputs.dry-run
+        shell: bash
         run: gh release upload ${{ inputs.tag-name }} ${{ steps.package-info.outputs.name }}.*
