@@ -68,17 +68,18 @@ jobs:
 
       - name: Setup | Path
         if: matrix.target == 'aarch64-pc-windows-msvc'
-        shell: bash
-        run: echo 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\Llvm\x64\bin' >> $GITHUB_PATH
+        run: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\Llvm\x64\bin" >> $env:GITHUB_PATH'
 
-      - name: Build | Build [Cargo]
-        if: matrix.os != 'ubuntu-latest'
+      - name: Build | Build
+        shell: bash
         run: |
-          cargo build --release --locked --target ${{ matrix.target }}
-      - name: Build | Build [Cross]
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          cross build --release --locked --target ${{ matrix.target }}
+          if [[ ${{ matrix.os }} != 'ubuntu-latest' ]]; then
+            build_command="cargo"
+          else
+            build_command="cross"
+          fi
+
+          ${build_command} build --release --locked --target ${{ matrix.target }}
 
       - name: Post Build | Get package info
         id: package-info
@@ -90,14 +91,16 @@ jobs:
             echo "name=justcommit-${{ matrix.target }}.zip" >> $GITHUB_OUTPUT
           fi
 
-      - name: Post Build | Prepare artifact [*nix]
-        if: matrix.os != 'windows-latest'
+      - name: Post Build | Prepare artifact
+        shell: bash
         run: |
-          tar czvf "${{ steps.package-info.outputs.name }}" "target/${{ matrix.target }}/release/justcommit" README.md LICENSE
-      - name: Post Build | Prepare artifact [Windows]
-        if: matrix.os == 'windows-latest'
-        run: |
-          zip "${{ steps.package-info.outputs.name }}" "target/${{ matrix.target }}/release/justcommit" README.md LICENSE
+          if [[ ${{ matrix.os}} != 'windows-latest' ]]; then
+            archive_command="tar czvf"
+          else
+            archive_command="zip"
+          fi
+
+          ${archive_command} "${{ steps.package-info.outputs.name }}" "target/${{ matrix.target }}/release/justcommit" README.md LICENSE
 
       - name: Release | Upload artifact
         uses: actions/upload-artifact@v3
