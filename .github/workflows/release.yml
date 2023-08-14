@@ -6,19 +6,11 @@ on:
         type: string
         description: "Tag to release"
         required: true
-      version:
-        type: string
-        description: "Version to release"
-        required: true
   workflow_dispatch:
     inputs:
       tag-name:
         type: string
         description: "Tag to release"
-        required: true
-      version:
-        type: string
-        description: "Version to release"
         required: true
       dry-run:
         type: boolean
@@ -31,71 +23,71 @@ permissions:
 
 jobs:
   release:
-    runs-on: ${{ matrix.job.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        job:
-          - os: macos-latest
-            target: x86_64-apple-darwin
-            use-cross: false
-          - os: macos-latest
-            target: aarch64-apple-darwin
-            use-cross: false
-          - os: windows-latest
-            target: x86_64-pc-windows-msvc
-            use-cross: false
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            use-cross: false
-          - os: ubuntu-latest
-            target: aarch64-unknown-linux-gnu
-            use-cross: true
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: x86_64-apple-darwin
+            os: macos-latest
+          - target: aarch64-apple-darwin
+            os: macos-latest
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+          - target: aarch64-pc-windows-msvc
+            os: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Setup | Checkout
+        uses: actions/checkout@v3
 
-      - uses: Swatinem/rust-cache@v2
+      - name: Setup | Cache
+        uses: Swatinem/rust-cache@v2
 
-      - uses: dtolnay/rust-toolchain@stable
+      - name: Setup | Rust
+        uses: dtolnay/rust-toolchain@stable
         with:
-          target: ${{ matrix.job.target }}
+          target: ${{ matrix.target }}
 
-      - uses: taiki-e/install-action@v2
-        if: matrix.job.use-cross
-        with:
-          tool: cross
+      - name: Setup | Cross
+        if: matrix.os == 'ubuntu-latest'
+        uses: taiki-e/install-action@cross
 
-      - shell: bash
+      - name: Build | Build [Cargo]
+        if: matrix.os != 'ubuntu-latest'
         run: |
-          if [[ "${{ matrix.job.use-cross }}" == "true" ]]; then
-            cross build --release --target ${{ matrix.job.target }}
-          else
-            cargo build --release --target ${{ matrix.job.target }}
-          fi
+          cargo build --release --frozen --target ${{ matrix.target }}
+      - name: Build | Build [Cross]
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cross build --release --frozen --target ${{ matrix.target }}
 
-      - id: package-info
+      - name: Post Build | Get package info
+        id: package-info
         shell: bash
-        run: echo "name=justcommit-${{ inputs.version }}-${{ matrix.job.target }}" >> "$GITHUB_OUTPUT"
-
-      - shell: bash
         run: |
-          package_name="${{ steps.package-info.outputs.name }}"
-          mkdir -p "$pacakge_name"
-
-          cp "target/${{ matrix.job.target }}/release/justcommit" "$package_name/"
-          cp "README.md" "$package_name/"
-          cp "LICENSE" "$package_name/"
-
-          if [[ "${{ matrix.job.os }}" == "windows-latest" ]]; then
-            zip -r "$package_name.zip" "$pacakge_name/"
+          if [[ ${{ matrix.target }} != 'windows-latest' ]]; then
+            echo "name=justcommit-${{ matrix.target }}.tar.gz" >> $GITHUB_OUTPUT
           else
-            tar -czvf "$package_name.tar.gz" "$pacakge_name/"
+            echo "name=justcommit-${{ matrix.target }}.zip" >> $GITHUB_OUTPUT
           fi
 
-      - uses: actions/upload-artifact@v3
+      - name: Post Build | Prepare artifact [*nix]
+        run: |
+          tar czvf "${{ steps.package-info.outputs.name }}" "target/${{ matrix.target }}/release/justcommit" README.md LICENSE
+      - name: Post Build | Prepare artifact [Windows]
+        run: |
+          zip "${{ steps.package-info.outputs.name }}" "target/${{ matrix.target }}/release/justcommit" README.md LICENSE
+
+      - name: Release | Upload artifact
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.package-info.outputs.name }}
-          path: ${{ steps.package-info.outputs.name }}.*
+          path: ${{ steps.package-info.outputs.name }}
 
-      - if: ${{ !inputs.dry-run }}
-        shell: bash
+      - name: Release | Upload asset
+        if: ${{ !inputs.dry-run }}
         run: gh release upload ${{ inputs.tag-name }} ${{ steps.package-info.outputs.name }}.*
