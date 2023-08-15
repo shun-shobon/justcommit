@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/shun-shobon/justcommit/compare/v0.1.0...v0.2.0) (2023-08-15)
+
+
+### Features
+
+* **env.rs:** Implement creation of Env struct from args or config ([c146cc4](https://github.com/shun-shobon/justcommit/commit/c146cc4917f73a46f227c194c74fe207d42fdc5a))
+* Use args ([34786af](https://github.com/shun-shobon/justcommit/commit/34786af34f588fdc8f938a6036d14412b885245b))
+
+
+### Bug Fixes
+
+* **deps:** update rust crate anyhow to 1.0.73 ([#21](https://github.com/shun-shobon/justcommit/issues/21)) ([5e6ba9d](https://github.com/shun-shobon/justcommit/commit/5e6ba9dcee6f5cd1f42d00594c54fbb83f4043d3))
+
 ## 0.1.0 (2023-08-14)
 
 
