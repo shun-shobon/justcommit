@@ -3,12 +3,13 @@ use std::{env, path::PathBuf, process::Command};
 use anyhow::{Context, Result};
 use serde::{Deserialize, Serialize};
 
+use crate::APP_NAME;
+
 #[cfg(not(target_os = "windows"))]
 static CONFIG_HOME_VAR: &str = "XDG_CONFIG_HOME";
 #[cfg(target_os = "windows")]
 static CONFIG_HOME_VAR: &str = "APPDATA";
 
-static APP_NAME: &str = env!("CARGO_PKG_NAME");
 static CONFIG_FILE_NAME: &str = "config.toml";
 
 #[derive(Debug, Clone, Copy)]

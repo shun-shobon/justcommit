@@ -13,6 +13,8 @@ use crate::config::Config;
 use crate::git::get_diffs;
 use crate::openai::generate_commit_message;
 
+static APP_NAME: &str = env!("CARGO_PKG_NAME");
+
 #[tokio::main]
 async fn main() -> Result<()> {
     let args = Args::parse();
