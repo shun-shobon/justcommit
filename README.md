@@ -29,10 +29,8 @@ JustCommit requires an OpenAI token to function. Place the token in `config.toml
 The configuration format is as follows:
 
 ```toml
-[openai_token]
-type = "plain"
-token = "<Your OpenAI Token>"
+openai_token = "<Your OpenAI Token>"
 ```
 
-If you're uncomfortable storing your token in plain text, you can use a secret reference from 1Password.
-In this case, replace "plain" with "1password" for the type.
+If you're uncomfortable storing your token in plain text, you can use **a secret reference from 1Password**.
+JustCommit will automatically detect the secret reference and use the token stored in 1Password.
