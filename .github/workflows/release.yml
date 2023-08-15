@@ -25,6 +25,8 @@ permissions:
 jobs:
   release:
     runs-on: ${{ matrix.os }}
+    env:
+      RUSTFLAGS: ${{ matrix.rustflags || '' }}
     strategy:
       fail-fast: false
       matrix:
@@ -60,39 +62,25 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         uses: taiki-e/install-action@cross
 
-      - name: Build | Build
-        env:
-          RUSTFLAGS: ${{ matrix.rustflags || '' }}
-        shell: bash
-        run: |
-          if [[ ${{ matrix.os }} != 'ubuntu-latest' ]]; then
-            build_command="cargo"
-          else
-            build_command="cross"
-          fi
-
-          ${build_command} build --release --locked --target ${{ matrix.target }}
+      - name: Build | Build (Cargo)
+        if: matrix.os != 'ubuntu-latest'
+        run: cargo build --release --locked --target ${{ matrix.target }}
+      - name: Build | Build (Cross)
+        if: matrix.os != 'ubuntu-latest'
+        run: cross build --release --locked --target ${{ matrix.target }}
 
       - name: Post Build | Get package info
         id: package-info
         shell: bash
         run: |
-          if [[ ${{ matrix.os }} != 'windows-latest' ]]; then
-            echo "name=justcommit-${{ matrix.target }}.tar.gz" >> $GITHUB_OUTPUT
-          else
-            echo "name=justcommit-${{ matrix.target }}.zip" >> $GITHUB_OUTPUT
-          fi
+          echo "name=justcommit-${{ matrix.target }}.${{ matrix.os != 'windows-latest' && 'tar.gz' || 'zip' }}" >> $GITHUB_OUTPUT
 
-      - name: Post Build | Prepare artifact
-        shell: bash
-        run: |
-          if [[ ${{ matrix.os }} != 'windows-latest' ]]; then
-            archive_command="tar czvf"
-          else
-            archive_command="7z a"
-          fi
-
-          ${archive_command} "${{ steps.package-info.outputs.name }}" "target/${{ matrix.target }}/release/justcommit" README.md LICENSE
+      - name: Post Build | Prepare artifact (*nix)
+        if: matrix.os != 'windows-latest'
+        run: tar czvf "${{ steps.package-info.outputs.name }}" "target/${{ matrix.target }}/release/justcommit" README.md LICENSE
+      - name: Post Build | Prepare artifact (Windows)
+        if: matrix.os == 'windows-latest'
+        run: Compress-Archive -Path "target\${{ matrix.target }}\release\justcommit.exe","README.md","LICENSE" -DestinationPath "${{ steps.package-info.outputs.name }}"
 
       - name: Release | Upload artifact
         uses: actions/upload-artifact@v3
