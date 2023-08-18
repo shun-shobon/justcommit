@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.1](https://github.com/shun-shobon/justcommit/compare/v0.2.0...v0.2.1) (2023-08-17)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate anyhow to 1.0.74 ([#23](https://github.com/shun-shobon/justcommit/issues/23)) ([5d3ad2e](https://github.com/shun-shobon/justcommit/commit/5d3ad2e4e820be4d804894ff331d842ac0b793e5))
+* **deps:** update rust crate anyhow to 1.0.75 ([#26](https://github.com/shun-shobon/justcommit/issues/26)) ([ab0a0dc](https://github.com/shun-shobon/justcommit/commit/ab0a0dc23ab5ac636698af600eace66f1a3cc9a9))
+* **deps:** update rust crate clap to 4.3.22 ([#27](https://github.com/shun-shobon/justcommit/issues/27)) ([ba621be](https://github.com/shun-shobon/justcommit/commit/ba621be8d650f4d12457c9d29aad0d929012313a))
+* **deps:** update rust crate tokio to 1.32.0 ([#25](https://github.com/shun-shobon/justcommit/issues/25)) ([7e1a7da](https://github.com/shun-shobon/justcommit/commit/7e1a7da500ee5ad31d4b556a710c3039b9bffbc3))
+
 ## [0.2.0](https://github.com/shun-shobon/justcommit/compare/v0.1.0...v0.2.0) (2023-08-15)
 
 
