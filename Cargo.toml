@@ -9,7 +9,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.75"
-chatgpt_rs = "1.1.13"
+chatgpt_rs = "1.2.0"
 clap = { version = "4.3.23", features = ["derive"] }
 config = { version = "0.13.3", default-features = false, features = ["toml"] }
 dirs = "5.0.1"
