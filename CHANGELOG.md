@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.2](https://github.com/shun-shobon/justcommit/compare/v0.2.1...v0.2.2) (2023-08-21)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate chatgpt_rs to 1.2.0 ([#31](https://github.com/shun-shobon/justcommit/issues/31)) ([0a32173](https://github.com/shun-shobon/justcommit/commit/0a32173054e847dbc3d52599219426c2096f98a2))
+* **deps:** update rust crate clap to 4.3.23 ([#29](https://github.com/shun-shobon/justcommit/issues/29)) ([19bd366](https://github.com/shun-shobon/justcommit/commit/19bd366c6af5139af5f7cb129a0aa24613c5fb9c))
+* **deps:** update rust crate serde to 1.0.184 ([#32](https://github.com/shun-shobon/justcommit/issues/32)) ([069df8e](https://github.com/shun-shobon/justcommit/commit/069df8ee802d2eee99f3c0966e23e649ef9cc2ce))
+* **deps:** update rust crate serde to 1.0.185 ([#33](https://github.com/shun-shobon/justcommit/issues/33)) ([a1f28bb](https://github.com/shun-shobon/justcommit/commit/a1f28bb5d4827d45a2b58cd4ec580522b5768cf9))
+
 ## [0.2.1](https://github.com/shun-shobon/justcommit/compare/v0.2.0...v0.2.1) (2023-08-17)
 
 
