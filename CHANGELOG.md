@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0](https://github.com/shun-shobon/justcommit/compare/v0.2.2...v0.3.0) (2023-08-22)
+
+
+### Features
+
+* Add commit module for generating commit messages from git diffs ([94bb3c8](https://github.com/shun-shobon/justcommit/commit/94bb3c8a313e7a01b061700b405cc05287390867))
+* Renew api client for OpenAI ([fe1e12c](https://github.com/shun-shobon/justcommit/commit/fe1e12ca472462e91d89324be0eae9a2cd079f70))
+
 ## [0.2.2](https://github.com/shun-shobon/justcommit/compare/v0.2.1...v0.2.2) (2023-08-21)
 
 
