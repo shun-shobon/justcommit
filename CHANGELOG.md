@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.1](https://github.com/shun-shobon/justcommit/compare/v0.3.0...v0.3.1) (2023-08-22)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate reqwest to 0.11.19 ([#35](https://github.com/shun-shobon/justcommit/issues/35)) ([f8a28b3](https://github.com/shun-shobon/justcommit/commit/f8a28b36d7e14ae7983b068fad1300e5e142290d))
+* **deps:** update rust crate serde_json to 1.0.105 ([#36](https://github.com/shun-shobon/justcommit/issues/36)) ([84f9832](https://github.com/shun-shobon/justcommit/commit/84f9832df3d16b31a36dc50f77528411bf97b19e))
+* Disable default-features of reqwest ([7a12c9c](https://github.com/shun-shobon/justcommit/commit/7a12c9c70a70df69a022de012c311899fd3f2ba6))
+
 ## [0.3.0](https://github.com/shun-shobon/justcommit/compare/v0.2.2...v0.3.0) (2023-08-22)
 
 
