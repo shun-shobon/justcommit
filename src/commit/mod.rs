@@ -2,7 +2,7 @@ mod openai;
 
 use std::fmt::Display;
 
-use self::openai::{Function, Message, Role};
+use self::openai::{Function, FunctionCallRequest, Message, Role};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -20,7 +20,13 @@ pub async fn generate_message(
     };
 
     let messages = create_history(diffs);
-    let message = openai::send_request(openai_token, Some(&[commit_func]), &messages).await?;
+    let message = openai::send_request(
+        openai_token,
+        Some(&[commit_func]),
+        FunctionCallRequest::Call("set_commit_message"),
+        &messages,
+    )
+    .await?;
     let Some(function_call) = message.function_call else {
         anyhow::bail!("No function call returned from OpenAI API")
     };

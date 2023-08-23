@@ -1,4 +1,5 @@
 use reqwest::{header, Client};
+use serde::ser::SerializeMap as _;
 use serde::{Deserialize, Serialize};
 
 const OPENAI_COMPLETIONS_URL: &str = "https://api.openai.com/v1/chat/completions";
@@ -6,6 +7,7 @@ const OPENAI_COMPLETIONS_URL: &str = "https://api.openai.com/v1/chat/completions
 pub async fn send_request(
     openai_token: &str,
     functions: Option<&[Function<'_>]>,
+    function_call: FunctionCallRequest<'_>,
     messages: &[Message],
 ) -> anyhow::Result<Message> {
     let mut headers = header::HeaderMap::new();
@@ -22,7 +24,7 @@ pub async fn send_request(
         model: Model::Gpt35Turbo0613,
         messages,
         functions,
-        function_call: "auto",
+        function_call,
     };
 
     let response = Client::new()
@@ -44,7 +46,7 @@ struct CompletionRequest<'a> {
     messages: &'a [Message],
     #[serde(skip_serializing_if = "Option::is_none")]
     functions: Option<&'a [Function<'a>]>,
-    function_call: &'a str,
+    function_call: FunctionCallRequest<'a>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -63,6 +65,32 @@ pub struct Function<'a> {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<&'a str>,
     pub parameters: serde_json::Value,
+}
+
+#[allow(dead_code)]
+#[derive(Debug, Clone, Default)]
+pub enum FunctionCallRequest<'a> {
+    #[default]
+    Auto,
+    None,
+    Call(&'a str),
+}
+
+impl Serialize for FunctionCallRequest<'_> {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        match self {
+            Self::Auto => serializer.serialize_str("auto"),
+            Self::None => serializer.serialize_str("none"),
+            Self::Call(name) => {
+                let mut map = serializer.serialize_map(Some(1))?;
+                map.serialize_entry("name", name)?;
+                map.end()
+            }
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
