@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/shun-shobon/justcommit/compare/v0.3.1...v0.3.2) (2023-08-23)
+
+
+### Bug Fixes
+
+* Ensure that GPT uses the commit function ([ac5be1f](https://github.com/shun-shobon/justcommit/commit/ac5be1f2df9cc0a6fc5e6e70563975b1ac54cdb6))
+
 ## [0.3.1](https://github.com/shun-shobon/justcommit/compare/v0.3.0...v0.3.1) (2023-08-22)
 
 
