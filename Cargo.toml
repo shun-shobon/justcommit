@@ -9,7 +9,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.75"
-clap = { version = "4.3.23", features = ["derive"] }
+clap = { version = "4.3.24", features = ["derive"] }
 config = { version = "0.13.3", default-features = false, features = ["toml"] }
 dirs = "5.0.1"
 git2 = { version = "0.17.2", default-features = false }
