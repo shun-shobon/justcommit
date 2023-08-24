@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.3](https://github.com/shun-shobon/justcommit/compare/v0.3.2...v0.3.3) (2023-08-24)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate clap to 4.3.24 ([#39](https://github.com/shun-shobon/justcommit/issues/39)) ([a787466](https://github.com/shun-shobon/justcommit/commit/a7874668f13946aeb2ccc8d10ead7f11e7b31dd1))
+* **deps:** update rust crate reqwest to 0.11.20 ([#41](https://github.com/shun-shobon/justcommit/issues/41)) ([7f5d640](https://github.com/shun-shobon/justcommit/commit/7f5d640dcece3ccd118b81053d2f4309396994d1))
+* **deps:** update rust crate serde to 1.0.186 ([#42](https://github.com/shun-shobon/justcommit/issues/42)) ([a3bd70e](https://github.com/shun-shobon/justcommit/commit/a3bd70e5c856f182aeea915faae2b63a78a8aac2))
+
 ## [0.3.2](https://github.com/shun-shobon/justcommit/compare/v0.3.1...v0.3.2) (2023-08-23)
 
 
