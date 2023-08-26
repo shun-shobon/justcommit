@@ -44,7 +44,7 @@ fn get_diffs_from_files<'a>(
     head_tree: &Tree<'a>,
 ) -> Result<String> {
     let mut diff_ops = DiffOptions::new();
-    for file in files.iter() {
+    for file in files {
         diff_ops.pathspec(file);
     }
 
