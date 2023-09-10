@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.6](https://github.com/shun-shobon/justcommit/compare/v0.3.5...v0.3.6) (2023-09-10)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate serde_json to 1.0.106 ([#53](https://github.com/shun-shobon/justcommit/issues/53)) ([5968f2d](https://github.com/shun-shobon/justcommit/commit/5968f2d869b0a1cba5b151f787c2fc828116e624))
+
 ## [0.3.5](https://github.com/shun-shobon/justcommit/compare/v0.3.4...v0.3.5) (2023-08-31)
 
 
