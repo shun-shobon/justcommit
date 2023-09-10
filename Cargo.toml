@@ -1,7 +1,7 @@
 [package]
 name = "justcommit"
 description = "AI powered commit message generator."
-version = "0.3.5"
+version = "0.3.6"
 authors = ["Shuntaro Nishizawa"]
 edition = "2021"
 
