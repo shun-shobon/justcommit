@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.7](https://github.com/shun-shobon/justcommit/compare/v0.3.6...v0.3.7) (2023-09-18)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate clap to 4.4.3 ([#55](https://github.com/shun-shobon/justcommit/issues/55)) ([bac5b95](https://github.com/shun-shobon/justcommit/commit/bac5b957940a9e5a98cf93275b0d336f6d364122))
+* **deps:** update rust crate indoc to 2.0.4 ([#58](https://github.com/shun-shobon/justcommit/issues/58)) ([c27c15d](https://github.com/shun-shobon/justcommit/commit/c27c15d35ad5582a5b1f3f43ea65d57c66c1b7c8))
+* **deps:** update rust crate schemars to 0.8.15 ([#59](https://github.com/shun-shobon/justcommit/issues/59)) ([b476a1c](https://github.com/shun-shobon/justcommit/commit/b476a1cabc66f51b760570108d68bdf2f2b851c0))
+* **deps:** update rust crate serde_json to 1.0.107 ([#57](https://github.com/shun-shobon/justcommit/issues/57)) ([dfdfe0f](https://github.com/shun-shobon/justcommit/commit/dfdfe0fbdd7407983144a688498cf201c199280c))
+
 ## [0.3.6](https://github.com/shun-shobon/justcommit/compare/v0.3.5...v0.3.6) (2023-09-10)
 
 
