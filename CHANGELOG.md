@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.8](https://github.com/shun-shobon/justcommit/compare/v0.3.7...v0.3.8) (2023-09-28)
+
+
+### Bug Fixes
+
+* **deps:** update rust crate clap to 4.4.4 ([#60](https://github.com/shun-shobon/justcommit/issues/60)) ([432f263](https://github.com/shun-shobon/justcommit/commit/432f2632535bd464c4c4426205efa2ebae82e617))
+* **deps:** update rust crate clap to 4.4.5 ([#64](https://github.com/shun-shobon/justcommit/issues/64)) ([67f5377](https://github.com/shun-shobon/justcommit/commit/67f53774f4d7d7684ef23cfa99d8aa4bfd930877))
+* **deps:** update rust crate git2 to 0.18.1 ([#62](https://github.com/shun-shobon/justcommit/issues/62)) ([7214824](https://github.com/shun-shobon/justcommit/commit/721482435eacc5f927fec9d297554741b79a35d2))
+
 ## [0.3.7](https://github.com/shun-shobon/justcommit/compare/v0.3.6...v0.3.7) (2023-09-18)
 
 
